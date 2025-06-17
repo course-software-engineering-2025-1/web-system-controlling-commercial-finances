@@ -1,0 +1,1 @@
+This repository contains the final work of the software engineering discipline taken in 2025.1.
