@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './Login.module.css';
+import finanTrackLogo from '../assets/logo.png';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -28,7 +29,11 @@ export default function Login() {
   return (
     <main className={styles.loginContainer} role="main" aria-label="Tela de Login do Sistema Financeiro">
       <section className={styles.loginBox}>
-        <h1 className={styles.logo} aria-label="Logo do Sistema Financeiro">App Finanças</h1>
+        <img 
+        src={finanTrackLogo} 
+        alt="Finan Track Logo" 
+        className={styles.logoImage} 
+        />
         <form className={styles.form} onSubmit={handleSubmit} noValidate>
           <div>
             <label className={styles.label} htmlFor="email">Email</label>
