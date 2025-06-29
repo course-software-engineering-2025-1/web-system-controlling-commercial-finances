@@ -13,6 +13,7 @@
   }
 }
 
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -34,5 +35,29 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+/* Responsividade para tablets */
+@media (max-width: 900px) {
+  .App-header {
+    font-size: 1.2rem;
+    padding: 24px;
+    min-height: 80vh;
+  }
+  .App-logo {
+    height: 30vmin;
+  }
+}
+
+/* Responsividade para celulares */
+@media (max-width: 500px) {
+  .App-header {
+    font-size: 1rem;
+    padding: 12px;
+    min-height: 60vh;
+  }
+  .App-logo {
+    height: 18vmin;
   }
 }

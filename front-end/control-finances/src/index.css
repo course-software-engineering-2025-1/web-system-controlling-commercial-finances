@@ -11,3 +11,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Garante que imagens e vídeos não ultrapassem a largura da tela */
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Responsividade global para elementos */
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
