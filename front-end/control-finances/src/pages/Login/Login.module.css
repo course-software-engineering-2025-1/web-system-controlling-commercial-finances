@@ -4,6 +4,7 @@
   --blue-500: #128ee2;
   --blue-400: #60a5fa;
   --blue-700: #1e40af;
+  --blue-800: #020e2f;
   --gray-800: #374151;
   --gray-600: #4b5563;
   --white: #f3f4f6;
@@ -17,7 +18,7 @@
   justify-content: center;
   align-items: center;
   padding: 16px;
-  background-color: var(--blue-600);
+  background-color: var(--blue-800);
   color: var(--white);
   font-family: 'Inter', sans-serif;
 }

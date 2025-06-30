@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Dashboard.module.css';
+import finanTrackLogo from '../assets/logo.png';
 
 const accounts = [
   { id: 1, name: 'Conta Corrente', balance: 12000.32, currency: 'BRL' },
@@ -43,20 +44,28 @@ export default function Dashboard() {
     <div className={styles['dashboard-container']} role="main" aria-label="Dashboard financeiro principal">
       <header className={styles.header} role="banner" aria-label="Cabeçalho principal com saldo e ações">
         <div className={styles['header-left']} aria-live="polite" aria-atomic="true">
-          <span>Total Líquido: </span>
-          <span className={styles['header-balance']} tabIndex={0} aria-label={`Saldo total líquido ${totalNetWorth.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`}>
-            {totalNetWorth.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-          </span>
-        </div>
+        <img 
+          src={finanTrackLogo}  // Ensure the logo variable points to the imported logo
+          alt="Logo do app" 
+          className={styles['app-logo']} // Add a class for styling if necessary
+          aria-hidden="true" 
+          style={{ height: '40px' }} // Adjust the height as needed
+        />
+        <span>Total Líquido: </span>
+        <span className={styles['header-balance']} tabIndex={0} aria-label={`Saldo total líquido ${totalNetWorth.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`}>
+          {totalNetWorth.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+        </span>
+      </div>
         <div className={styles['header-actions']} aria-label="Ações rápidas e notificações">
           <button aria-label="Adicionar nova movimentação">
-            <span className="material-icons" aria-hidden="true">logo do app</span>
+            <span className="material-icons" aria-hidden="true">Adicionar movimentação</span> {/* Replace with appropriate icon */}
           </button>
           <button aria-label="Ver notificações">
-            <span className="material-icons" aria-hidden="true">notifications</span>
+            <span className="material-icons" aria-hidden="true">Notificações</span>
           </button>
         </div>
       </header>
+
 
       <aside className={styles.sidebar} role="navigation" aria-label="Menu lateral principal">
         <nav>
