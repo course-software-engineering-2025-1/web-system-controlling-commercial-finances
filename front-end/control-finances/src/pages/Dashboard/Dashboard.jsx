@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
 import finanTrackLogo from '../assets/logo.png';
+import bellLogo from '../assets/bell.png';
+import addLogo from '../assets/add.png';
 
 const accounts = [
   { id: 1, name: 'Conta Corrente', balance: 12000.32, currency: 'BRL' },
@@ -39,6 +42,7 @@ const insights = {
 
 export default function Dashboard() {
   const totalNetWorth = accounts.reduce((sum, acc) => sum + acc.balance, 0);
+  const navigate = useNavigate();
 
   return (
     <div className={styles['dashboard-container']} role="main" aria-label="Dashboard financeiro principal">
@@ -57,11 +61,15 @@ export default function Dashboard() {
         </span>
       </div>
         <div className={styles['header-actions']} aria-label="Ações rápidas e notificações">
-          <button aria-label="Adicionar nova movimentação">
-            <span className="material-icons" aria-hidden="true">Adicionar movimentação</span> {/* Replace with appropriate icon */}
+          <button aria-label="Adicionar nova movimentação"
+          onClick={() => navigate('/transacoes')}
+          >
+            <img src={addLogo} alt="Nova Movimentação" style={{height: 24}}  />
           </button>
-          <button aria-label="Ver notificações">
-            <span className="material-icons" aria-hidden="true">Notificações</span>
+          <button aria-label="Ver notificações"
+          onClick={() => navigate('/notificacoes')}
+          >
+            <img src={bellLogo} alt="Notificações" style={{height: 24}} />
           </button>
         </div>
       </header>
@@ -69,9 +77,9 @@ export default function Dashboard() {
 
       <aside className={styles.sidebar} role="navigation" aria-label="Menu lateral principal">
         <nav>
-          <button tabIndex={0}>Contas</button>
-          <button tabIndex={0}>Categorias</button>
-          <button tabIndex={0}>Metas Financeiras</button>
+          <button tabIndex={0} onClick={() => navigate('/usuarios')}>Usuários</button>
+          <button tabIndex={0} onClick={() => navigate('/produtos')} >Produtos</button>
+          <button tabIndex={0} onClick={() => navigate('/relatorios')} >Relatórios</button>
         </nav>
       </aside>
 

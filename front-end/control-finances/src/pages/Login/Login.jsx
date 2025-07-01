@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './Login.module.css';
 import finanTrackLogo from '../assets/logo.png';
 
@@ -6,7 +7,7 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
@@ -23,7 +24,8 @@ export default function Login() {
       return;
     }
 
-    alert('Login efetuado com sucesso! (Simulação)');
+    //alert('Login efetuado com sucesso! (Simulação)');
+    navigate('/dashboard');
   };
 
   return (
@@ -66,15 +68,13 @@ export default function Login() {
               autoComplete="current-password"
             />
           </div>
-          <a
-            href="#"
+          <Link
+            to="/esqueci-senha"
             tabIndex={0}
             className={styles.forgotPassword}
-            onClick={(e) => { e.preventDefault(); alert('Funcionalidade de recuperação de senha (Simulação)'); }}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); alert('Funcionalidade de recuperação de senha (Simulação)'); } }}
           >
             Esqueceu sua senha?
-          </a>
+          </Link>
           <button type="submit" className={styles.submitButton} aria-label="Entrar no sistema">
             <span className={`material-icons ${styles.materialIcons}`} aria-hidden="true">Entrar</span>
           </button>
@@ -86,7 +86,7 @@ export default function Login() {
           <div className={styles.registerPrompt}>
             <span>Ainda não tem cadastro? </span>
             <a 
-              href="/register" 
+              href="/cadastro" 
               className={styles.registerLink}>
               Clique aqui
             </a>
