@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import styles from './Login.module.css';
+import styles from './Cadastro.module.css';
 import finanTrackLogo from '../assets/logo.png';
 
-export default function Login() {
+export default function Cadastro() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -12,8 +13,13 @@ export default function Login() {
     setError('');
 
     const emailValid = email.trim() !== '' && email.includes('@');
+    const nameValid = name.trim() !== '';
     const passwordValid = password.length >= 6;
 
+    if (!nameValid) {
+      setError('Por favor, informe seu nome.');
+      return;
+    }
     if (!emailValid) {
       setError('Por favor, informe um email válido.');
       return;
@@ -23,18 +29,33 @@ export default function Login() {
       return;
     }
 
-    alert('Login efetuado com sucesso! (Simulação)');
+    alert('Cadastro realizado com sucesso! (Simulação)');
   };
 
   return (
-    <main className={styles.loginContainer} role="main" aria-label="Tela de Login do Sistema Financeiro">
-      <section className={styles.loginBox}>
+    <main className={styles.cadastroContainer} role="main" aria-label="Tela de Cadastro do Sistema Financeiro">
+      <section className={styles.cadastroBox}>
         <img 
-        src={finanTrackLogo} 
-        alt="Finan Track Logo" 
-        className={styles.logoImage} 
+          src={finanTrackLogo} 
+          alt="Finan Track Logo" 
+          className={styles.logoImage} 
         />
         <form className={styles.form} onSubmit={handleSubmit} noValidate>
+          <div>
+            <label className={styles.label} htmlFor="name">Nome</label>
+            <input
+              id="name"
+              type="text"
+              name="name"
+              className={styles.input}
+              placeholder="Digite seu nome"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              aria-required="true"
+              autoComplete="name"
+            />
+          </div>
           <div>
             <label className={styles.label} htmlFor="email">Email</label>
             <input
@@ -63,34 +84,17 @@ export default function Login() {
               required
               aria-required="true"
               minLength={6}
-              autoComplete="current-password"
+              autoComplete="new-password"
             />
           </div>
-          <a
-            href="#"
-            tabIndex={0}
-            className={styles.forgotPassword}
-            onClick={(e) => { e.preventDefault(); alert('Funcionalidade de recuperação de senha (Simulação)'); }}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); alert('Funcionalidade de recuperação de senha (Simulação)'); } }}
-          >
-            Esqueceu sua senha?
-          </a>
-          <button type="submit" className={styles.submitButton} aria-label="Entrar no sistema">
-            <span className={`material-icons ${styles.materialIcons}`} aria-hidden="true">Entrar</span>
+          <button type="submit" className={styles.submitButton} aria-label="Cadastrar no sistema">
+            <span className={`material-icons ${styles.materialIcons}`} aria-hidden="true">Cadastrar</span>
           </button>
           {error && (
             <div className={styles.errorMessage} role="alert" aria-live="assertive">
               {error}
             </div>
           )}
-          <div className={styles.registerPrompt}>
-            <span>Ainda não tem cadastro? </span>
-            <a 
-              href="/register" 
-              className={styles.registerLink}>
-              Clique aqui
-            </a>
-          </div>
         </form>
       </section>
     </main>

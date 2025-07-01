@@ -12,7 +12,7 @@
   --bg-filter-fallback: rgba(255, 255, 255, 0.85);
 }
 
-.loginContainer {
+.cadastroContainer {
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -23,9 +23,8 @@
   font-family: 'Inter', sans-serif;
 }
 
-.loginBox {
+.cadastroBox {
   background-color: var(--bg-filter-fallback);
-  /* só aplica filtro se suportado */
   backdrop-filter: blur(14px);
   border-radius: 16px;
   max-width: 400px;
@@ -36,16 +35,6 @@
   gap: 32px;
   align-items: center;
   box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-}
-
-.logo {
-  font-size: 2.5rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, var(--blue-400), var(--blue-500));
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  user-select: none;
 }
 
 .logoImage {
@@ -60,14 +49,7 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 18px; /* gap reduzido */
-}
-
-.form > div {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  gap: 18px;
 }
 
 .label {
@@ -127,25 +109,6 @@
   outline: auto 2px var(--blue-500);
 }
 
-.forgotPassword {
-  font-size: 0.9rem;
-  color: var(--blue-500);
-  text-align: right;
-  cursor: pointer;
-  user-select: none;
-  transition: color 0.2s ease;
-}
-
-.forgotPassword:hover,
-.forgotPassword:focus {
-  color: var(--blue-600);
-  text-decoration: underline;
-}
-
-.materialIcons {
-  font-size: 20px;
-}
-
 .errorMessage {
   background-color: var(--error-red);
   color: var(--white);
@@ -156,31 +119,11 @@
   animation: fadeIn 0.4s ease forwards;
 }
 
-.registerPrompt {
-  text-align: center;
-  font-size: 0.9rem;
-  color: var(--blue-500);
-}
-
-.registerLink {
-  color: var(--blue-600);
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.registerLink:hover,
-.registerLink:focus {
-  color: var(--blue-700);
-}
-
-
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 440px) {
-  .loginBox { margin: 16px; padding: 28px 20px; }
-  .submitButton { font-size: 1rem; padding: 14px; }
-  .logo { font-size: 2rem; }
+  .cadastroBox { margin: 16px; padding: 28px 20px; }
 }
