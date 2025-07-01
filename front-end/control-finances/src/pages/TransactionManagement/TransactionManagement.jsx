@@ -236,7 +236,7 @@ export default function TransactionManagement() {
           />
           <label htmlFor="isRecurring">Transação Recorrente</label>
         </div>
-        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', flexWrap: 'wrap' }}>
           <button type="submit">{editing ? 'Salvar' : 'Adicionar'}</button>
           {editing && (
             <button type="button" className={styles.cancel} onClick={resetForm} aria-label="Cancelar edição">
