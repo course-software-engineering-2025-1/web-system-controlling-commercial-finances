@@ -44,6 +44,8 @@ select {
   width: 100%;
   max-width: 280px;
   transition: border-color 0.3s ease;
+  background-color: #ffffff;
+  color: #111827;
 }
 
 input[type="text"]:focus,
