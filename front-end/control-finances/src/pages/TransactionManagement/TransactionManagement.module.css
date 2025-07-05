@@ -1,0 +1,237 @@
+.transaction-management-container {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 0 16px 48px;
+}
+
+h1 {
+  color: #3b82f6;
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 24px;
+  user-select: none;
+}
+
+form {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;   
+  gap: 16px;
+  margin-bottom: 32px;
+  align-items: stretch;     
+}
+
+form > div {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  flex: unset;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+  width: 100%;
+  max-width: 220px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 8px #3b82f6cc;
+}
+
+.checkbox-container {
+  max-width: 220px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+}
+
+button {
+  background: #3b82f6;
+  color: white;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  min-width: 120px;
+  transition: background-color 0.25s ease, box-shadow 0.3s ease;
+  margin-top: 0;
+}
+
+button:hover,
+button:focus {
+  background: #1e3a8a;
+  box-shadow: 0 10px 20px rgba(59, 130, 246, 0.5);
+  outline: none;
+}
+
+button.cancel {
+  background: #ef4444;
+}
+
+button.cancel:hover,
+button.cancel:focus {
+  background: #b91c1c;
+}
+
+.error-message {
+  width: 100%;
+  color: #b91c1c;
+  font-weight: 600;
+  margin-top: 8px;
+  user-select: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #bfdbfe;
+  user-select: none;
+}
+
+th,
+td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  vertical-align: middle;
+}
+
+tbody tr:hover {
+  background: #e0f2fe;
+  cursor: pointer;
+}
+
+.amount {
+  font-weight: 700;
+}
+
+.amount.positive {
+  color: #3b82f6;
+}
+
+.amount.negative {
+  color: #ef4444;
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+}
+
+.material-icons {
+  cursor: pointer;
+  vertical-align: middle;
+  color: #3b82f6;
+  transition: color 0.25s ease;
+  font-size: 15px;
+}
+
+.material-icons.edit:hover {
+  color: #1e3a8a;
+}
+
+.material-icons.delete:hover {
+  color: #ef4444;
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+  .transaction-management-container {
+    max-width: 98vw;
+    padding: 0 2vw 32px;
+  }
+  form {
+    padding: 16px 6px;
+  }
+  th,
+  td {
+    padding: 10px 8px;
+  }
+}
+
+@media (max-width: 640px) {
+  form {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  form > div,
+  input[type="text"],
+  input[type="number"],
+  input[type="date"],
+  select,
+  button {
+    max-width: 100%;
+    width: 100%;
+  }
+  .checkbox-container {
+    max-width: 100%;
+  }
+  .actions {
+    justify-content: flex-start;
+  }
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  tbody tr {
+    margin: 0 0 15px 0;
+    border-radius: 16px;
+    background: #f9fafb;
+    padding: 10px 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  tbody tr td {
+    border: none;
+    padding: 8px 10px;
+    position: relative;
+    padding-left: 50%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  tbody tr td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 15px;
+    font-weight: 600;
+    color: #4b5563;
+    white-space: nowrap;
+  }
+}
