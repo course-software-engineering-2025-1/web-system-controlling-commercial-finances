@@ -26,6 +26,7 @@ class AuthController extends Controller
         ]);
 
         $data['password'] = Hash::make($data['password']);
+        $data['role'] = 'comerciante'; // Definindo o papel como 'comerciante'
 
         $user = User::create($data);
 
@@ -108,6 +109,29 @@ class AuthController extends Controller
         return $status === Password::PASSWORD_RESET
             ? response()->json(['message' => 'Senha redefinida com sucesso.'])
             : response()->json(['message' => 'Erro ao redefinir a senha.'], 500);
+    }
+
+    public function registerFuncionario(Request $request)
+    {
+        Log::info('Entrou no método registerFuncionario: ' . json_encode($request->all()));
+
+        $data = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|min:6'
+        ]);
+
+        $data['password'] = Hash::make($data['password']);
+
+        $data['role'] = 'funcionario'; // Definindo o papel como 'funcionario'
+
+        $user = User::create($data);
+
+        if (!$user) {
+            return response()->json(['error' => 'Erro ao criar usuário'], 500);
+        }
+
+        return response()->json(['user' => $user], 201);
     }
 
 }

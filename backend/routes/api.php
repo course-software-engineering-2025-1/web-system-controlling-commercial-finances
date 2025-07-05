@@ -16,4 +16,5 @@ Route::middleware('auth:api')->group(function () {
 
 Route::middleware(['auth:api', 'role:comerciante'])->group(function (){
     Route::get('/report', [ReportController::class, 'index']);
+    Route::post('/register_funcionario', [AuthController::class, 'registerFuncionario']);
 });
