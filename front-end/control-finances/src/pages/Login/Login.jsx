@@ -46,7 +46,6 @@ export default function Login() {
       setError(err.message);
     }
 
-    //alert('Login efetuado com sucesso! (Simulação)');
     navigate('/dashboard');
   };
 

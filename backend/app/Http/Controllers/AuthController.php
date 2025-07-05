@@ -10,22 +10,28 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
     public function register(Request $request)
     {
+
+        Log::info('Entrou no método register: ' . json_encode($request->all()));
+
         $data = $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
-            'cpf' => 'required|unique:users',
-            'password' => 'required|string',
-            'role' => 'required|in:comerciante,funcionario',
+            'password' => 'required|string|min:6'
         ]);
 
         $data['password'] = Hash::make($data['password']);
 
         $user = User::create($data);
+
+        if (!$user) {
+            return response()->json(['error' => 'Erro ao criar usuário'], 500);
+        }
 
         return response()->json(['user' => $user], 201);
     }

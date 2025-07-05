@@ -11,6 +11,7 @@ import ProfileSettings from './pages/ProfileSettings/ProfileSettings';
 import UserManagement from './pages/UserManagement/UserManagement';
 import Esquecisenha from './pages/EsqueciSenha/EsqueciSenha';
 import Cadastro from './pages/Cadastro/Cadastro';
+import CadastroCliente from './pages/CadastroCliente/CadastroCliente';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/notificacoes" element={<Notifications />} />
         <Route path="/esqueci-senha" element={<Esquecisenha />} />
         <Route path="/cadastro" element={<Cadastro/>} />
+        <Route path="/cadastro-cliente" element={<CadastroCliente />} />
       </Routes>
     </Router>
   );

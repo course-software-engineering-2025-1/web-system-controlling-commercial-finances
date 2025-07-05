@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import styles from './Cadastro.module.css';
 import finanTrackLogo from '../assets/logo.png';
+import { useNavigate } from 'react-router-dom';
 
 export default function Cadastro() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,12 +37,12 @@ export default function Cadastro() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify({
           name,
           email,
-          password,
-          role: 'comerciante'
+          password
         }),
       });
 
@@ -52,6 +54,7 @@ export default function Cadastro() {
 
       const data = await response.json();
       alert('Cadastro realizado com sucesso! (Simulação)');
+      navigate('/dashboard');
       
     } catch (err) {
       setError(err.message);
