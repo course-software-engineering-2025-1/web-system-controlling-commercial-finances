@@ -8,8 +8,9 @@ const CadastroCliente = () => {
   const [endereco, setEndereco] = useState('');
   const [aniversario, setAniversario] = useState('');
   const [historicoCompras, setHistoricoCompras] = useState('');
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log({
       nome,
@@ -20,6 +21,34 @@ const CadastroCliente = () => {
       historicoCompras,
     });
     // Adicione a lógica de envio aqui
+    try {
+      const token = localStorage.getItem('token')
+      const response = await fetch('http://localhost:8000/api/cadastrar-cliente', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization' :  ' Bearer ' + token
+        },
+        body: JSON.stringify({ 
+          nome, 
+          'cpf_cnpj' : cpf, 
+          'telefone' : numeroContato, 
+          endereco, 
+          'nascimento' : aniversario, 
+          'historico_compras' : historicoCompras 
+        }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error (errorData.message || 'Erro ao registrar cliente.');
+      }
+      const data = await response.json();
+
+      alert('Cliente  registrado com sucesso');
+    }
+    catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
@@ -54,7 +83,7 @@ const CadastroCliente = () => {
           />
         </div>
 
-        <div lassName='form-group'>
+        <div className='form-group'>
           <label>Endereço:</label>
           <input type="text"
             value={endereco}
@@ -82,6 +111,7 @@ const CadastroCliente = () => {
           />
         </div>
         <button type="submit">Cadastrar</button>
+        {error && <p className='error-message'>{error}</p>}
       </form>
     </div>
   );

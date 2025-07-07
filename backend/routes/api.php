@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ReportController;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -17,4 +18,9 @@ Route::middleware('auth:api')->group(function () {
 Route::middleware(['auth:api', 'role:comerciante'])->group(function (){
     Route::get('/report', [ReportController::class, 'index']);
     Route::post('/register_funcionario', [AuthController::class, 'registerFuncionario']);
+    Route::post('/cadastrar-cliente', [ClienteController::class, 'store']);
+    Route::get('/clentes', [ClienteController::class, 'index']);
+    Route::get('/cliente/{id}', [ClienteController::class, 'show']);
+    Route::put('/clientes/{id}', [ClienteController::class, 'update']);
+    Route::delete('/clientes/{id}', [ClienteController::class, 'destroy']);
 });
