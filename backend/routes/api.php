@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\FornecedorController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -23,4 +24,5 @@ Route::middleware(['auth:api', 'role:comerciante'])->group(function (){
     Route::get('/cliente/{id}', [ClienteController::class, 'show']);
     Route::put('/clientes/{id}', [ClienteController::class, 'update']);
     Route::delete('/clientes/{id}', [ClienteController::class, 'destroy']);
+    Route::post('/cadastrar-fornecedor', [FornecedorController::class, 'store']);
 });

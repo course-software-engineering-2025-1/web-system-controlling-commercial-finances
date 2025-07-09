@@ -12,6 +12,7 @@ import UserManagement from './pages/UserManagement/UserManagement';
 import Esquecisenha from './pages/EsqueciSenha/EsqueciSenha';
 import Cadastro from './pages/Cadastro/Cadastro';
 import CadastroCliente from './pages/CadastroCliente/CadastroCliente';
+import CadastrarFornecedor from './pages/CadastroFornecedor/CadastroFornecedor';  
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/esqueci-senha" element={<Esquecisenha />} />
         <Route path="/cadastro" element={<Cadastro/>} />
         <Route path="/cadastro-cliente" element={<CadastroCliente />} />
+        <Route path="/cadastro-fornecedor" element={<CadastrarFornecedor />} />
       </Routes>
     </Router>
   );
