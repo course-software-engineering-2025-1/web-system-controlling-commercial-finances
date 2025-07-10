@@ -45,6 +45,13 @@ class AuthController extends Controller
             return response()->json(['error' => 'Credenciais inválidas'], 401);
         }
 
+        $user = JWTAuth::user();
+
+        if ($user->status !== 'Ativo') {
+            return response()->json(['error' => 'Usuario inativo'], 403);
+            JWTAuth::invalidate($token);
+        }
+
         return response()->json(['token' => $token]);
     }
 
@@ -113,17 +120,17 @@ class AuthController extends Controller
 
     public function registerFuncionario(Request $request)
     {
-        Log::info('Entrou no método registerFuncionario: ' . json_encode($request->all()));
 
         $data = $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:6'
+            'role' => 'required|in:funcionario,comerciante', // Definindo o papel como 'funcionario'
+            'status' => 'required|in:Ativo,Inativo', // Definindo o status como 'ativo' ou 'inativo'
         ]);
 
-        $data['password'] = Hash::make($data['password']);
+        $senhaNaoHash = Str::random(8); // Gerando uma senha aleatória
 
-        $data['role'] = 'funcionario'; // Definindo o papel como 'funcionario'
+        $data['password'] = Hash::make($senhaNaoHash); // Gerando uma senha aleatória
 
         $user = User::create($data);
 
@@ -131,7 +138,57 @@ class AuthController extends Controller
             return response()->json(['error' => 'Erro ao criar usuário'], 500);
         }
 
-        return response()->json(['user' => $user], 201);
+        return response()->json(['user' => $user, 'password' => $senhaNaoHash], 201);
+
+    }
+
+    // função para retornar  os funcionarios tanto funcionarios quanto comerciantes
+    public function getFuncionarios()
+    {
+        $funcionarios = User::where('role', 'funcionario')->orWhere('role', 'comerciante')->get();
+        return response()->json($funcionarios);
+    }
+
+    // função para retornar um funcionario especifico
+    public function getFuncionario($id)
+    {
+        $funcionario = User::find($id);
+        if (!$funcionario) {
+            return response()->json(['error' => 'Funcionário não encontrado'], 404);
+        }
+        return response()->json($funcionario);
+        }
+
+    // função para atualizar um funcionario especifico
+    public function updateFuncionario(Request $request, $id)
+    {
+        $funcionario = User::find($id);
+        if (!$funcionario) {
+            return response()->json(['error' => 'Funcionário não encontrado'], 404);
+        }
+
+        $data = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users,email,' . $funcionario->id,
+            'role' => 'required|in:funcionario,comerciante',
+            'status' => 'required|in:Ativo,Inativo',
+        ]);
+
+        $funcionario->update($data);
+
+        return response()->json($funcionario);
+    }
+    // função para deletar um funcionario especifico
+    public function deleteFuncionario($id)
+    {
+        $funcionario = User::find($id);
+        if (!$funcionario) {
+            return response()->json(['error' => 'Funcionário não encontrado'], 404);
+        }
+
+        $funcionario->delete();
+
+        return response()->json(['message' => 'Funcionário deletado com sucesso']);
     }
 
 }
