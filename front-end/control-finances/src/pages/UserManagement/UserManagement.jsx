@@ -1,20 +1,36 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './UserManagement.module.css';
 
-const initialUsers = [
-  { id: 1, name: 'João Silva', email: 'joao@example.com', role: 'Comerciante', status: 'Ativo' },
-  { id: 2, name: 'Maria Souza', email: 'maria@example.com', role: 'Funcionário', status: 'Ativo' },
-  { id: 3, name: 'Carlos Pereira', email: 'carlos@example.com', role: 'Funcionário', status: 'Inativo' },
-];
 
 export default function UserManagement() {
-  const [users, setUsers] = useState(initialUsers);
+  const [users, setUsers] = useState([]);
   const [form, setForm] = useState({ id: null, name: '', email: '', role: 'Funcionário', status: 'Ativo' });
   const [editing, setEditing] = useState(false);
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    // Simula uma chamada para buscar usuários do backend
+    const fetchUsers = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:8000/api/funcionarios', {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Erro ao buscar usuários.');
+        }
+        const data = await response.json();
+        setUsers(data);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+    fetchUsers();
+  }, []);
+
   const resetForm = () => {
-    setForm({ id: null, name: '', email: '', role: 'Funcionário', status: 'Ativo' });
+    setForm({ id: null, name: '', email: '', role: 'Funcionário', status: '' });
     setEditing(false);
     setError('');
   };
@@ -28,10 +44,10 @@ export default function UserManagement() {
     return /\S+@\S+\.\S+/.test(email);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
 
+    
     if (!form.name.trim()) {
       setError('Nome é obrigatório.');
       return;
@@ -48,27 +64,95 @@ export default function UserManagement() {
       setError('Selecione um status.');
       return;
     }
+    
+    try {
+      const token = localStorage.getItem('token')
+
+      const payload ={
+      name: form.name,
+      email: form.email,
+      role: form.role.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
+      status: form.status
+    };
 
     if (editing) {
-      setUsers(users.map(u => u.id === form.id ? form : u));
-    } else {
-      const newUser  = { ...form, id: Date.now() };
-      setUsers([...users, newUser ]);
+      const response  = await fetch(`http://localhost:8000/api/funcionario/${form.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Erro ao atualizar usuário.');
+      }
+      const updatedUser = await response.json();
+      setUsers(users.map(user => user.id === updatedUser.id ? updatedUser : user));
+      alert('Usuário atualizado com sucesso.');
+
+    } else {      
+      const response = await fetch('http://localhost:8000/api/register_funcionario', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization' :  ' Bearer ' + token
+        },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error (errorData.message || 'Erro ao registrar funcionario.');
+      }
+      const data = await response.json();
+      
+      alert('Funcionário registrado com sucesso. Senha: ' + data.password);
+      const newUser = { ...form, id: data.id };
+      setUsers([...users, newUser]);
+      //resetForm();
     }
-    resetForm();
-  };
+  } catch (err) {
+    setError(err.message);
+  }
+};
 
-  const handleEdit = (user) => {
-    setForm(user);
-    setEditing(true);
-    setError('');
-  };
+const handleEdit = (user) => {
+  setForm({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role === 'comerciante' ? 'Comerciante' : 'Funcionário',
+    status: user.status === 'ativo' ? 'Ativo' : 'Inativo',
+  });
+  setEditing(true);
+  setError('');
+};
 
-  const handleDelete = (id) => {
+
+  const handleDelete = async (id) => {
     if(window.confirm('Confirma exclusão do usuário?')){
-      setUsers(users.filter(u => u.id !== id));
-      if(editing && form.id === id){
-        resetForm();
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:8000/api/funcionario/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        if (!response.ok) {
+          throw new Error( 'Erro ao excluir usuário.');
+        }
+
+        setUsers(users.filter(user => user.id !== id));
+
+        if (editing && form.id === id) {
+          resetForm();
+          
+        }
+
+        alert('Usuário excluído com sucesso.');
+      } catch (err) {
+        setError(err.message);
       }
     }
   };
