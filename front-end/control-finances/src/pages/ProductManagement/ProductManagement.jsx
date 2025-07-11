@@ -1,17 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './ProductManagement.module.css';
 
+/*
 const initialProducts = [
   { id: 1, name: 'Arroz 5kg', sku: 'ARZ005', price: 25.90, stock: 150, category: 'Alimentos' },
   { id: 2, name: 'Óleo de Soja 900ml', sku: 'OLE900', price: 7.80, stock: 320, category: 'Alimentos' },
   { id: 3, name: 'Sabonete Glicerinado', sku: 'SABGLI', price: 2.50, stock: 80, category: 'Higiene' },
 ];
+*/
 
 export default function ProductManagement() {
-  const [products, setProducts] = useState(initialProducts);
+  const [products, setProducts] = useState([]);
   const [form, setForm] = useState({ id: null, name: '', sku: '', price: '', stock: '', category: '' });
   const [editing, setEditing] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    // Simula uma chamada para buscar produtos do backend
+    const fetchProducts = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:8000/api/produtos', {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Erro ao buscar produtos.');
+        }
+        const data = await response.json();
+        setProducts(data);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   const resetForm = () => {
     setForm({ id: null, name: '', sku: '', price: '', stock: '', category: '' });
@@ -26,12 +49,12 @@ export default function ProductManagement() {
 
   const isPositiveNumber = (val) => !isNaN(val) && Number(val) >= 0;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
     if (!form.name.trim()) {
-      setError('Nome do produto é obrigatório.');
+      setError('name do produto é obrigatório.');
       return;
     }
     if (!form.sku.trim()) {
@@ -53,17 +76,49 @@ export default function ProductManagement() {
 
     const newProduct = {
       id: editing ? form.id : Date.now(),
-      name: form.name.trim(),
+      nome: form.name.trim(),
       sku: form.sku.trim(),
-      price: parseFloat(form.price),
-      stock: parseInt(form.stock, 10),
-      category: form.category.trim(),
+      preco: parseFloat(form.price),
+      estoque: parseInt(form.stock, 10),
+      categoria: form.category.trim(),
     };
 
     if (editing) {
-      setProducts(products.map(p => p.id === newProduct.id ? newProduct : p));
+      const response = await fetch(`http://localhost:8000/api/produtos/${newProduct.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify(newProduct),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.message || 'Erro ao atualizar produto.');
+        return;
+      }
+      
+      const updatedProducts = products.map(p => (p.id === newProduct.id ? newProduct : p));
+      setProducts(updatedProducts);
+      alert('Produto atualizado com sucesso!');
     } else {
-      setProducts([...products, newProduct]);
+      const response = await fetch('http://localhost:8000/api/produtos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify(newProduct),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.message || 'Erro ao cadastrar produto.');
+        return;
+      }
+
+      const createdProduct = await response.json();
+      setProducts([...products, createdProduct]);
+      alert('Produto cadastrado com sucesso!');
     }
     resetForm();
   };
@@ -71,21 +126,32 @@ export default function ProductManagement() {
   const handleEdit = (product) => {
     setForm({
       id: product.id,
-      name: product.name,
+      name: product.nome,
       sku: product.sku,
-      price: product.price.toFixed(2),
-      stock: product.stock.toString(),
-      category: product.category,
+      price: Number(product.preco).toFixed(2),
+      stock: product.estoque.toString(),
+      category: product.categoria,
     });
     setEditing(true);
     setError('');
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (window.confirm('Confirma exclusão do produto?')) {
-      setProducts(products.filter(p => p.id !== id));
-      if (editing && form.id === id) {
-        resetForm();
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:8000/api/produtos/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Erro ao excluir produto.');
+        }
+        setProducts(products.filter(product => product.id !== id));
+        alert('Produto excluído com sucesso.');
+      } catch (error) {
+        setError(error.message);
       }
     }
   };
@@ -197,11 +263,11 @@ export default function ProductManagement() {
             ) : (
               products.map(product => (
                 <tr key={product.id}>
-                  <td data-label="Nome">{product.name}</td>
+                  <td data-label="Nome">{product.nome}</td>
                   <td data-label="SKU">{product.sku}</td>
-                  <td data-label="Preço">{product.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
-                  <td data-label="Estoque">{product.stock}</td>
-                  <td data-label="Categoria">{product.category}</td>
+                  <td data-label="Preço">{product.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                  <td data-label="Estoque">{product.estoque}</td>
+                  <td data-label="Categoria">{product.categoria}</td>
                   <td data-label="Ações" className={styles.actions}>
                     <span
                       role="button"
