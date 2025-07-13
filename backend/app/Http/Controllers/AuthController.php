@@ -118,8 +118,32 @@ class AuthController extends Controller
             : response()->json(['message' => 'Erro ao redefinir a senha.'], 500);
     }
 
+    public function update(Request $request)
+    {
+        $user = $request->user();
+
+        $data = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:6|confirmed',
+            'theme' => 'nullable|string|in:light,dark', // Adicionando validação para o tema
+            'notificationsEnabled' => 'nullable|boolean', // Adicionando validação para notific
+        ]);
+
+        if (isset($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
+        $user->update($data);
+
+        return response()->json(['user' => $user]);
+    }
+
     public function registerFuncionario(Request $request)
     {
+        $user = $request->user();
 
         $data = $request->validate([
             'name' => 'required|string',
@@ -131,6 +155,7 @@ class AuthController extends Controller
         $senhaNaoHash = Str::random(8); // Gerando uma senha aleatória
 
         $data['password'] = Hash::make($senhaNaoHash); // Gerando uma senha aleatória
+        $data['comerciante_id'] = $user->id;
 
         $user = User::create($data);
 
@@ -142,27 +167,50 @@ class AuthController extends Controller
 
     }
 
-    // função para retornar  os funcionarios tanto funcionarios quanto comerciantes
-    public function getFuncionarios()
+    // função para retornar  os funcionarios tanto funcionarios quanto comerciantes de acordo com o comerciante cadastrado
+        public function getFuncionarios(Request $request)
     {
-        $funcionarios = User::where('role', 'funcionario')->orWhere('role', 'comerciante')->get();
+        $user = $request->user();
+
+        if (!$user || $user->role !== 'comerciante') {
+            return response()->json([], 200); // ou 403
+        }
+
+        $funcionarios = User::where('comerciante_id', $user->id)
+                            ->where('role', 'funcionario')
+                            ->get();
+
         return response()->json($funcionarios);
     }
 
+
+
     // função para retornar um funcionario especifico
-    public function getFuncionario($id)
+    public function getFuncionario($id, Request $request)
     {
-        $funcionario = User::find($id);
+        $user = $request->user();
+
+        $funcionario = User::where('id', $id)
+                            ->where('comerciante_id', $user->id)
+                            ->first();
+
         if (!$funcionario) {
             return response()->json(['error' => 'Funcionário não encontrado'], 404);
         }
         return response()->json($funcionario);
         }
 
+
     // função para atualizar um funcionario especifico
     public function updateFuncionario(Request $request, $id)
     {
-        $funcionario = User::find($id);
+
+        $user = $request->user();
+
+        $funcionario = User::where('id', $id)
+                            ->where('comerciante_id', $user->id)
+                            ->first();
+
         if (!$funcionario) {
             return response()->json(['error' => 'Funcionário não encontrado'], 404);
         }
@@ -179,9 +227,14 @@ class AuthController extends Controller
         return response()->json($funcionario);
     }
     // função para deletar um funcionario especifico
-    public function deleteFuncionario($id)
+    public function deleteFuncionario($id, Request $request)
     {
-        $funcionario = User::find($id);
+        $user = $request->user();
+
+        $funcionario = User::where('id', $id)
+                            ->where('comerciante_id', $user->id)
+                            ->first();
+
         if (!$funcionario) {
             return response()->json(['error' => 'Funcionário não encontrado'], 404);
         }

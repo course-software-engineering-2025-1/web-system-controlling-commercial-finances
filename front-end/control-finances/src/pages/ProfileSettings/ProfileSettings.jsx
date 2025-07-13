@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './ProfileSettings.module.css';
 
 const initialProfile = {
@@ -15,6 +15,28 @@ export default function ProfileSettings() {
   const [msg, setMsg] = useState('');
   const [error, setError] = useState('');
 
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    fetch('http://localhost:8000/api/me', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    })
+      .then(res => res.json())
+      .then(user => {
+        setProfile({
+          name: user.name,
+          email: user.email,
+          password: '',
+          theme: user.theme || 'light',
+          notificationsEnabled: user.notificationsEnabled ?? true,
+        });
+      })
+      .catch(err => console.error('Erro ao carregar perfil:', err));
+  }, []);
+
+
   const handleChange = (e) => {
     const { name, type, checked, value } = e.target;
     setProfile(prev => ({
@@ -27,34 +49,62 @@ export default function ProfileSettings() {
     setPasswordConfirm(e.target.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setMsg('');
-    setError('');
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setMsg('');
+  setError('');
 
-    if (!profile.name.trim()) {
-      setError('Nome é obrigatório.');
+  if (!profile.name.trim()) {
+    setError('Nome é obrigatório.');
+    return;
+  }
+  if (!profile.email.trim() || !/\S+@\S+\.\S+/.test(profile.email)) {
+    setError('Email inválido.');
+    return;
+  }
+  if (profile.password) {
+    if (profile.password.length < 6) {
+      setError('A senha deve ter no mínimo 6 caracteres.');
       return;
     }
-    if (!profile.email.trim() || !/\S+@\S+\.\S+/.test(profile.email)) {
-      setError('Email inválido.');
+    if (profile.password !== passwordConfirm) {
+      setError('As senhas não coincidem.');
       return;
     }
-    if (profile.password) {
-      if (profile.password.length < 6) {
-        setError('A senha deve ter no mínimo 6 caracteres.');
-        return;
-      }
-      if (profile.password !== passwordConfirm) {
-        setError('As senhas não coincidem.');
-        return;
-      }
+  }
+
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch('http://localhost:8000/api/profile', {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        name: profile.name,
+        email: profile.email,
+        password: profile.password || undefined,
+        password_confirmation: passwordConfirm || undefined,
+        theme: profile.theme,
+        notificationsEnabled: profile.notificationsEnabled,
+      }),
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.message || 'Erro ao salvar dados.');
     }
 
     setMsg('Configurações salvas com sucesso!');
     setProfile(prev => ({ ...prev, password: '' }));
     setPasswordConfirm('');
-  };
+  } catch (err) {
+    setError(err.message);
+  }
+};
+
 
   return (
     <section className={styles['profile-settings-container']} aria-label="Configurações do Perfil do Usuário">
