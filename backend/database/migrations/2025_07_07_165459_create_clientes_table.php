@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id'); // ID do usuário que é o comerciante dono do cliente
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');   // comeeciante dono do cliente
             $table->string('nome');
-            $table->string('cpf_cnpj')->unique();
+            $table->string('cpf_cnpj');
             $table->string('telefone')->nullable();
             $table->string('endereco')->nullable();
             $table->date('nascimento')->nullable();

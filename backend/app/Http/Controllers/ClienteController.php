@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class ClienteController extends Controller
 {
@@ -31,12 +32,19 @@ class ClienteController extends Controller
     {
         $request->validate([
             'nome' => 'required|string',
-            'cpf_cnpj' =>  'required|string|unique:clientes',
+            'cpf_cnpj' => [
+                'required',
+                'string',
+                Rule::unique('clientes')->where(function ($query) {
+                    return $query->where('user_id', Auth::id());
+                }),
+            ],
             'telefone' => 'nullable|string',
             'endereco' => 'nullable|string',
             'nascimento' => 'nullable|date',
             'historico_compras' => 'nullable|string',
         ]);
+
 
         $cliente = Cliente::create([
             'user_id' => (Auth::user())->id,
