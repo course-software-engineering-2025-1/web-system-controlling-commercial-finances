@@ -1,0 +1,162 @@
+.loginContainer {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  background: linear-gradient(135deg, #1e3a8a, #111827);
+  color: #f3f4f6;
+  font-family: 'Inter', sans-serif;
+}
+
+.loginBox {
+  background: rgba(17, 24, 39, 0.85);
+  backdrop-filter: blur(14px);
+  border-radius: 16px;
+  max-width: 400px;
+  width: 100%;
+  padding: 32px 28px;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+}
+
+.logo {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #60a5fa, #2563eb);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  user-select: none;
+  display: inline-block;
+  -moz-background-clip: text;
+}
+
+.form {
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px; /* diminua o gap entre os blocos do form */
+}
+
+.form > div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0; /* remova margens extras */
+}
+
+.label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #e5e7eb;
+  width: 90%;         /* igual ao input */
+  max-width: 320px;   /* igual ao input */
+  min-width: 180px;
+  text-align: left;   /* garante alinhamento à esquerda */
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.input {
+  width: 90%;         /* ou 80%, ajuste como preferir */
+  max-width: 320px;   /* limite máximo */
+  min-width: 180px;   /* opcional */
+  margin: 0 auto;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid #4b5563;
+  outline: none;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #f3f4f6;
+  background-color: #374151;
+  transition: box-shadow 0.3s ease;
+  margin-bottom: 0;
+}
+
+.input::placeholder {
+  color: #9ca3af;
+}
+
+.input:focus {
+  box-shadow: 0 0 8px #60a5facc;
+  border-color: #2563eb;
+}
+
+.submitButton {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: #f3f4f6;
+  font-size: 1.15rem;
+  font-weight: 700;
+  padding: 16px;
+  border-radius: 16px;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.25s ease, box-shadow 0.3s ease;
+  display: block;
+  width: 90%;         /* igual ao input */
+  max-width: 320px;   /* igual ao input */
+  min-width: 180px;
+  margin: 24px auto 0 auto; /* espaço acima e centralizado */
+  text-align: center;
+}
+
+.submitButton:hover,
+.submitButton:focus {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.7);
+  outline: none;
+}
+
+.forgotPassword {
+  font-size: 0.9rem;
+  color: #93c5fd;
+  text-align: right;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.forgotPassword:hover,
+.forgotPassword:focus {
+  color: #bfdbfe;
+  outline: none;
+  text-decoration: underline;
+}
+
+.materialIcons {
+  font-size: 20px;
+}
+
+.errorMessage {
+  background-color: #dc2626;
+  color: #f3f4f6;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  text-align: center;
+  user-select: none;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+@media (max-width: 440px) {
+  .loginBox { margin: 16px; padding: 28px 20px; }
+  .submitButton { font-size: 1rem; padding: 14px; }
+  .logo { font-size: 2rem; }
+}
