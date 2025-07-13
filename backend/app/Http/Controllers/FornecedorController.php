@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Fornecedor;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,7 +32,13 @@ class FornecedorController extends Controller
     {
         $request->validate([
             'nome' => 'required|string',
-            'cnpj' => 'required|string|unique:fornecedores',
+            'cnpj' => [
+                'required',
+                'string',
+                Rule::unique('fornecedores')->where(function ($query) {
+                    return $query->where('user_id', Auth::id());
+                }),
+            ],
             'contato' => 'required|string'
         ]);
 

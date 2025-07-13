@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id'); // ID do usuário que é o comerciante dono do fornecedor
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); // comerciante dono do fornecedor
             $table->string('nome');
-            $table->string('cnpj')->unique();
+            $table->string('cnpj');
             $table->string('contato');
             $table->timestamps();
         });
