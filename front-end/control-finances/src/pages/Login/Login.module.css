@@ -1,3 +1,10 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--blue-800);
+}
+
 :root {
   /* Paleta principal */
   --blue-600: #0269b5;
