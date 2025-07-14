@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './TransactionManagement.module.css';
 
 const initialAccounts = [
@@ -15,13 +15,9 @@ const initialCategories = [
   { id: 5, name: 'Outros' },
 ];
 
-const initialTransactions = [
-  { id: 1, accountId: 1, amount: -250.00, category: 'Alimentação', subcategory: 'Mercado', description: 'Compra Mercado', date: '2024-06-20', type: 'expense', location: 'Supermercado XYZ', isRecurring: false },
-  { id: 2, accountId: 2, amount: 1200.00, category: 'Salário', subcategory: '', description: 'Recebimento Mensal', date: '2024-06-21', type: 'income', location: '', isRecurring: true },
-];
 
 export default function TransactionManagement() {
-  const [transactions, setTransactions] = useState(initialTransactions);
+  const [transactions, setTransactions] = useState([]);
   const [form, setForm] = useState({
     id: null,
     accountId: '',
@@ -35,7 +31,34 @@ export default function TransactionManagement() {
   });
   const [editing, setEditing] = useState(false);
   const [error, setError] = useState('');
-
+  
+  useEffect(() => {
+    // Simulate fetching initial transactions from an API
+    const fetchTransactions = async () => {
+      // This would normally be an API call
+      try {
+        const token = localStorage.getItem('token');
+  
+      const response = await fetch('http://localhost:8000/api/transactions', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch transactions');
+      }
+  
+      const data = await response.json();
+      setTransactions(data);
+  
+  
+    } catch (error) {
+      console.error(error);
+    }
+  };
+    fetchTransactions();
+  }, []);
   const resetForm = () => {
     setForm({
       id: null,
@@ -51,13 +74,13 @@ export default function TransactionManagement() {
     setEditing(false);
     setError('');
   };
-
+  
   const handleChange = (e) => {
     const { name, type, value, checked } = e.target;
     setForm({...form, [name]: type === 'checkbox' ? checked : value});
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
@@ -82,8 +105,9 @@ export default function TransactionManagement() {
       return;
     }
 
+    const token = localStorage.getItem('token');
+
     const newTransaction = {
-      id: editing ? form.id : Date.now(),
       accountId: parseInt(form.accountId, 10),
       amount: parseFloat(form.amount),
       category: form.category,
@@ -94,36 +118,90 @@ export default function TransactionManagement() {
       location: form.location,
       isRecurring: form.isRecurring,
     };
-
+    try {
     if (editing) {
-      setTransactions(transactions.map(tx => tx.id === newTransaction.id ? newTransaction : tx));
-    } else {
-      setTransactions([newTransaction, ...transactions]);
+      const response = await fetch(`http://localhost:8000/api/transactions/${form.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(newTransaction),
+      });
+
+      if (!response.ok) {
+        setError('Erro ao atualizar transação.');
+        const updateTx = await response.json();
+      }
+      const updateTx = await response.json();
+      setTransactions(transactions.map(tx => tx.id === updateTx.id ? updateTx : tx));
+    }else {
+        const response = await fetch(`http://localhost:8000/api/transactions`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(newTransaction),
+        });
+
+        if (!response.ok) {
+          setError('Erro ao criar transação.');
+          return;
+        }
+
+        const createdTx = await response.json();
+        setTransactions([createdTx, ...transactions]);
     }
     resetForm();
+
+ } catch (error) {
+      console.error('Erro ao salvar transação:', error);
+      setError('Erro ao salvar transação. Tente novamente.');
+    }
   };
 
   const handleEdit = (tx) => {
-    setForm({
-      id: tx.id,
-      accountId: tx.accountId.toString(),
-      amount: tx.amount.toString(),
-      category: tx.category,
-      subcategory: tx.subcategory,
-      description: tx.description,
-      date: tx.date,
-      location: tx.location,
-      isRecurring: tx.isRecurring,
-    });
-    setEditing(true);
-    setError('');
-  };
+  setForm({
+    id: tx.id ?? null,
+    accountId: tx.accountId != null ? tx.accountId.toString() : '',
+    amount: tx.amount != null ? tx.amount.toString() : '',
+    category: tx.category ?? '',
+    subcategory: tx.subcategory ?? '',
+    description: tx.description ?? '',
+    date: tx.date ?? '',
+    location: tx.location ?? '',
+    isRecurring: tx.isRecurring ?? false,
+  });
+  setEditing(true);
+  setError('');
+};
 
-  const handleDelete = (id) => {
-    if(window.confirm('Confirma exclusão dessa transação?')) {
-      setTransactions(transactions.filter(tx => tx.id !== id));
-      if(editing && form.id === id) {
-        resetForm();
+
+  const handleDelete = async (id) => {
+    if (window.confirm('Confirma exclusão dessa transação?')) {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:8000/api/transactions/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          setError('Erro ao excluir transação.');
+          return;
+        }
+
+        setTransactions(transactions.filter(tx => tx.id !== id));
+        if (editing && form.id === id) {
+          resetForm();
+        }
+      } catch (err) {
+        console.error('Erro ao excluir transação:', err);
+        setError('Erro ao excluir transação. Tente novamente.');
       }
     }
   };
@@ -145,7 +223,9 @@ export default function TransactionManagement() {
           >
             <option value="">Selecione a conta</option>
             {initialAccounts.map(acc => (
-              <option key={acc.id} value={acc.id}>{acc.name}</option>
+              acc.id !== 0 && acc.name ? (
+                <option key={acc.id} value={acc.id}>{acc.name}</option>
+              ) : null
             ))}
           </select>
         </div>
