@@ -10,9 +10,12 @@ class ProdutosController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $produtos = Produtos::all();
+        $user = $request->user();
+
+        // Retorna só produtos do comerciante logado
+        $produtos = Produtos::where('comerciante_id', $user->id)->get();
         return response()->json($produtos);
     }
 
@@ -29,6 +32,9 @@ class ProdutosController extends Controller
      */
     public function store(Request $request)
     {
+
+        $user = $request->user();
+
         $validated = $request->validate([
             'nome' => 'required|string|max:255',
             'sku' => 'required|string',
@@ -37,7 +43,10 @@ class ProdutosController extends Controller
             'categoria' => 'required|string|max:255',
         ]);
 
+        $validated['comerciante_id'] = $user->id;
+
         $produto = Produtos::create($validated);
+
 
         return response()->json($produto, 201);
     }
@@ -45,9 +54,17 @@ class ProdutosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Produtos $produtos)
+    public function show($id, Request $request)
     {
-        return response()->json($produtos);
+        $user = $request->user();
+
+        $produto = Produtos::where('id', $id)->where('comerciante_id', $user->id)->first();
+
+        if (!$produto) {
+            return response()->json(['message' => 'Produto não encontrado'], 404);
+        }
+
+        return response()->json($produto);
     }
 
     /**
@@ -61,8 +78,19 @@ class ProdutosController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Produtos $produtos)
+    public function update(Request $request, $id)
     {
+
+        $user = $request->user();
+
+        $produto = Produtos::where('id', $id)
+            ->where('comerciante_id', $user->id)
+            ->first();
+
+        if (!$produto) {
+            return response()->json(['error' => 'Produto não encontrado'], 404);
+        }
+
         $validated = $request->validate([
             'nome' => 'required|string|max:255',
             'sku' => 'required|string',
@@ -71,17 +99,28 @@ class ProdutosController extends Controller
             'categoria' => 'required|string|max:255',
         ]);
 
-        $produtos->update($validated);
+        $produto->update($validated);
 
-        return response()->json($produtos);
+        return response()->json($produto);
     }
 
     /**
      * Remove the specified resource from storage. de acordo com o id do produto correspondente
      */
-    public function destroy(Produtos $produtos)
+    public function destroy($id, Request $request)
     {
-        $produtos->delete();
+        $user = $request->user();
+
+        $produto = Produtos::where('id', $id)
+            ->where('comerciante_id', $user->id)
+            ->first();
+
+        if (!$produto) {
+            return response()->json(['error' => 'Produto não encontrado'], 404);
+        }
+
+        $produto->delete();
+
         return response()->json(null, 204);
     }
 }

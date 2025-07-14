@@ -12,6 +12,7 @@ class Produtos extends Model
         'preco',
         'estoque',
         'categoria',
+        'comerciante_id'
     ];
 
     /**
