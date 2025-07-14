@@ -39,7 +39,9 @@ Route::middleware('auth:api')->group(function () {
 });
 
 Route::middleware(['auth:api', 'role:comerciante'])->group(function (){
-    Route::get('/report', [ReportController::class, 'index']);
+    Route::get('/report/{tipo}', [ReportController::class, 'show']);
+    Route::get('/report-export/{tipo}', [ReportController::class, 'export']);
+
 
     Route::post('/register_funcionario', [AuthController::class, 'registerFuncionario']);
     Route::get('/funcionarios', [AuthController::class, 'getFuncionarios']);
@@ -64,16 +66,19 @@ Route::middleware(['auth:api', 'role:comerciante'])->group(function (){
     Route::delete('/budgets/{budget}', [BudgetController::class, 'destroy']);
 
     Route::get('/insights', [InsightsController::class, 'index']);
+    Route::post('/insights', [InsightsController::class, 'store']);
 
     Route::get('/investments-summary', [InvestmentController::class, 'summary']);
     Route::post('/investments', [InvestmentController::class, 'store']);
 
     Route::get('/bills-due', [BillController::class, 'due']);
+    Route::post('/bills', [BillController::class, 'store']);
 
     Route::get('/notifications', [NotificationController::class, 'index']);
     Route::patch('/notifications/mark-all', [NotificationController::class, 'markAllAsRead']);
     Route::patch('/notifications/{id}/toggle-read', [NotificationController::class, 'toggleRead']);
     Route::post('/notifications', [NotificationController::class, 'store']);
+    Route::get('/notifications/check', [NotificationController::class, 'checkAndGenerateNotifications']);
 
     Route::post('/goals', [GoalController::class, 'store']);
     Route::get('/goals', [GoalController::class, 'index']);

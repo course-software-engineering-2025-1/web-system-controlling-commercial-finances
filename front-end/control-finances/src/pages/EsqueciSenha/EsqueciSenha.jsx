@@ -30,7 +30,7 @@ export default function EsqueciSenha() {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Erro ao enviar instruções de redefinição de senha.');
       }
-      alert('Instruções para a redefinição de senha foram enviadas para o seu email! (Simulação)');
+      alert('Instruções para a redefinição de senha foram enviadas para o seu email!');
       setEmail('');
     } catch (err) {
       setError(err.message);

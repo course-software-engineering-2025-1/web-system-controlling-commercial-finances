@@ -11,9 +11,9 @@ import ProfileSettings from './pages/ProfileSettings/ProfileSettings';
 import UserManagement from './pages/UserManagement/UserManagement';
 import Esquecisenha from './pages/EsqueciSenha/EsqueciSenha';
 import Cadastro from './pages/Cadastro/Cadastro';
+import MetasFinanceiras from './pages/MetasFinanceiras/MetasFinanceiras';
+import CadastroFornecedor from './pages/CadastroFornecedor/CadastroFornecedor';
 import CadastroCliente from './pages/CadastroCliente/CadastroCliente';
-import CadastrarFornecedor from './pages/CadastroFornecedor/CadastroFornecedor'; 
-import MetasFinanceiras from './pages/MetasFinanceiras/MetasFinanceiras'; 
 
 function App() {
   return (
@@ -29,9 +29,9 @@ function App() {
         <Route path="/notificacoes" element={<Notifications />} />
         <Route path="/esqueci-senha" element={<Esquecisenha />} />
         <Route path="/cadastro" element={<Cadastro/>} />
-        <Route path="/cadastro-cliente" element={<CadastroCliente />} />
-        <Route path="/cadastro-fornecedor" element={<CadastrarFornecedor />} />
         <Route path="/metas-financeiras" element={<MetasFinanceiras />} />
+        <Route path="/cadastro-fornecedor" element={<CadastroFornecedor />} />
+        <Route path="/cadastro-cliente" element={<CadastroCliente />} />
       </Routes>
     </Router>
   );
