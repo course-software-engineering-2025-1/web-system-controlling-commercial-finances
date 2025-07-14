@@ -1,0 +1,116 @@
+.report-container {
+  max-width: 980px;
+  margin: 24px auto;
+  padding: 16px 24px 48px;
+}
+
+h1 {
+  font-weight: 700;
+  color: #3b82f6;
+  font-size: 2rem;
+  margin-bottom: 24px;
+  user-select: none;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 32px;
+  gap: 0 16px;
+}
+
+.controls label {
+  font-weight: 600;
+  margin-right: 8px;
+  user-select: none;
+}
+
+select, button {
+  font-size: 1rem;
+  padding: 10px 16px;
+  border-radius: 16px;
+  border: 1px solid #d1d5db;
+  cursor: pointer;
+  font-weight: 600;
+  min-width: 160px;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+  margin-right: 16px;
+  margin-bottom: 0;
+}
+
+select:focus, button:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 6px #3b82f6cc;
+  background-color: #bfdbfe;
+}
+
+button {
+  background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+  color: white;
+  border: none;
+  min-width: 140px;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+}
+
+.report-title {
+  font-weight: 600;
+  font-size: 1.6rem;
+  margin-bottom: 16px;
+  user-select: none;
+}
+
+.report-body {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 6px 12px rgb(0 0 0 / 0.05);
+  user-select: none;
+}
+
+.summary {
+  margin-top: 24px;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* Responsividade */
+@media (max-width: 700px) {
+  .report-container {
+    max-width: 98vw;
+    padding: 8px 2vw 32px;
+  }
+  h1 {
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+  }
+  .report-title {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+  .report-body {
+    padding: 12px 4px;
+  }
+}
+
+@media (max-width: 560px) {
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px 0;
+  }
+  select, button {
+    margin-bottom: 12px;
+    width: 100%;
+    min-width: unset;
+    margin-right: 0;
+  }
+}
