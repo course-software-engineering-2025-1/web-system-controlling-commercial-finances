@@ -1,50 +1,55 @@
+html,
+body {
+  overflow: auto;
+}
+
 body {
   padding: 20px;
 }
 
 .cadastrar-fornecedor {
-    max-width: 400px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
-    text-align: center;
-    color: #007bff;
+  text-align: center;
+  color: #007bff;
 }
 
 .form-group {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 label {
-    display: block;
-    margin-bottom: 5px;
+  display: block;
+  margin-bottom: 5px;
 }
 
 input {
-    width: 100%;
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 
 button {
-    margin-top: 15px;
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+  margin-top: 15px;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 @media (max-width: 600px) {
@@ -54,7 +59,7 @@ button:hover {
     margin: 10px auto;
     padding: 10px;
     border-radius: 6px;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
   }
 
   h2 {

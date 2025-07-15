@@ -11,7 +11,10 @@
   --error-red: #dc2626;
   --bg-filter-fallback: rgba(255, 255, 255, 0.85);
 }
-
+html,
+body {
+  overflow: auto;
+}
 body {
   margin: 0;
   padding: 0;
@@ -26,7 +29,7 @@ body {
   padding: 16px;
   background-color: var(--blue-800);
   color: var(--white);
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .cadastroBox {
@@ -41,7 +44,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
 .logoImage {
@@ -101,7 +104,8 @@ body {
   border-radius: 16px;
   cursor: pointer;
   border: none;
-  transition: transform 0.25s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.3s ease,
+    background-color 0.3s ease;
   width: 90%;
   max-width: 320px;
   margin: 24px auto 0;
@@ -113,7 +117,7 @@ body {
 .submitButton:focus {
   background-color: var(--blue-700);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   outline: auto 2px var(--blue-500);
 }
 
@@ -128,8 +132,14 @@ body {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 440px) {
@@ -138,12 +148,18 @@ body {
     margin: 0;
     align-items: center;
   }
-  .cadastroBox { margin: 16px; padding: 32px 28px; align-items: center; width: 100%; }
-  .submitButton { font-size: 1rem; padding: 14px; }
+  .cadastroBox {
+    margin: 16px;
+    padding: 32px 28px;
+    align-items: center;
+    width: 100%;
+  }
+  .submitButton {
+    font-size: 1rem;
+    padding: 14px;
+  }
   form {
     width: 100%;
     max-width: 100%;
   }
-
-  
 }

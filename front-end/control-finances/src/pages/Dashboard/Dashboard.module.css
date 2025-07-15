@@ -1,3 +1,8 @@
+html,
+body {
+  overflow: auto;
+}
+
 .dashboard-container {
   display: grid;
   grid-template-columns: 280px 1fr 320px;
@@ -20,7 +25,7 @@
   color: white;
   font-weight: 600;
   font-size: 1.3rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 10;
 }
 
@@ -253,7 +258,6 @@
   margin-right: 10px; /* Espaçamento entre o logo e o texto */
 }
 
-
 /* Responsividade */
 @media (max-width: 1024px) {
   .dashboard-container {
@@ -284,7 +288,7 @@
       "header"
       "main";
   }
-   .mobileMenuButton {
+  .mobileMenuButton {
     display: block;
     background: none;
     border: none;
@@ -305,7 +309,7 @@
     right: 10px;
     z-index: 200;
     border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
     padding: 18px;
   }
   .sidebar {
@@ -337,7 +341,7 @@
   }
 
   .header-balance {
-    font-size:1.1rem;
+    font-size: 1.1rem;
   }
 
   .mobileMenuButton {
@@ -345,18 +349,20 @@
     position: static;
   }
 
-@media (min-width: 641px) {
-  .mobileMenuButton, .mobileMenu {
-    display: none !important;
+  @media (min-width: 641px) {
+    .mobileMenuButton,
+    .mobileMenu {
+      display: none !important;
+    }
+    .card,
+    .accounts-list,
+    .account-card {
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
   }
-  .card, .accounts-list, .account-card {
-    width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-  }
- }
 }
-
 
 @media (max-width: 640px) {
   .header-actions {

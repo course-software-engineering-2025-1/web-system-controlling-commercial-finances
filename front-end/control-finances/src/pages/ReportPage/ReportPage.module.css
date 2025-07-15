@@ -1,3 +1,8 @@
+html,
+body {
+  overflow: auto;
+}
+
 .report-container {
   max-width: 980px;
   margin: 24px auto;
@@ -26,7 +31,8 @@ h1 {
   user-select: none;
 }
 
-select, button {
+select,
+button {
   font-size: 1rem;
   padding: 10px 16px;
   border-radius: 16px;
@@ -39,7 +45,8 @@ select, button {
   margin-bottom: 0;
 }
 
-select:focus, button:focus {
+select:focus,
+button:focus {
   outline: none;
   border-color: #3b82f6;
   box-shadow: 0 0 6px #3b82f6cc;
@@ -107,7 +114,8 @@ button:hover {
     align-items: stretch;
     gap: 12px 0;
   }
-  select, button {
+  select,
+  button {
     margin-bottom: 12px;
     width: 100%;
     min-width: unset;

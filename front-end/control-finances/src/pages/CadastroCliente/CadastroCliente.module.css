@@ -1,3 +1,8 @@
+html,
+body {
+  overflow: auto;
+}
+
 body {
   padding: 20px;
 }
@@ -19,7 +24,6 @@ h2 {
 .form-group {
   margin-bottom: 20px;
 }
-
 
 label {
   display: block;
@@ -51,7 +55,6 @@ button:hover {
   background-color: #0056b3;
 }
 
-
 @media (max-width: 600px) {
   .cadastro-container {
     max-width: 98%;
@@ -59,7 +62,7 @@ button:hover {
     margin: 10px auto;
     padding: 10px;
     border-radius: 6px;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
   }
 
   h2 {
@@ -77,12 +80,12 @@ button:hover {
     min-width: 0;
     box-sizing: border-box;
   }
-  
+
   textarea {
     min-height: 80px;
     resize: vertical;
   }
-  
+
   button {
     font-size: 1rem;
     padding: 9px 0;
