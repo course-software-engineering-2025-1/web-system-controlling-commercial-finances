@@ -551,4 +551,4 @@ Dra. Carla Ilane Moreira Bezerra
 ## License
 This project is open source and licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
-More details about the application can be found in the pdf of this repository.
+More details about the application can be found in the pdf file of this repository.
