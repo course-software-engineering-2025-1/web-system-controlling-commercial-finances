@@ -532,10 +532,6 @@ System tests were executed to verify end‑to‑end flows, simulating user inter
 - **Concurrency Scenarios**  
   - Simulate multiple users creating transactions simultaneously on the same account to verify balance consistency (may require mocks or a more advanced test setup).  
 
-
-## Contribution
-Contributions are welcome! Feel free to open issues for bugs or feature suggestions, or submit pull requests for improvements.
-
 ## Application available at
 http://3.17.67.137/
 
@@ -548,6 +544,9 @@ http://3.17.67.137/
 
 ## Project supervising professor
 Dra. Carla Ilane Moreira Bezerra
+
+## Contribution
+Contributions are welcome! Feel free to open issues for bugs or feature suggestions, or submit pull requests for improvements.
 
 ## License
 This project is open source and licensed under the [MIT License](https://opensource.org/licenses/MIT).
