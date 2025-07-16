@@ -79,6 +79,7 @@ The system is divided into modules to facilitate financial and commercial manage
 
 ## Technologies Used
 - **Backend:** Laravel (PHP Framework)
+- **Frontend:** HTML, CSS, Javascript, React.js
 - **Authentication:** JWT (JSON Web Tokens)
 - **Database:** SQLite (default configuration, but can be configured for MySQL, PostgreSQL, etc.)
 - **Development Tools:** Composer, Vite, npm
@@ -551,4 +552,4 @@ Dra. Carla Ilane Moreira Bezerra
 ## License
 This project is open source and licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
-More details about the application can be found in the pdf of this repository.
+More details about the application can be found in the pdf file of this repository.
