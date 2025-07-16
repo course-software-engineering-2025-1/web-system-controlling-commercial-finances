@@ -79,7 +79,7 @@ The system is divided into modules to facilitate financial and commercial manage
 
 ## Technologies Used
 - **Backend:** Laravel (PHP Framework)
-- **Front-end:** HTML, CSS, Javascript, React.js
+- **Frontend:** HTML, CSS, Javascript, React.js
 - **Authentication:** JWT (JSON Web Tokens)
 - **Database:** SQLite (default configuration, but can be configured for MySQL, PostgreSQL, etc.)
 - **Development Tools:** Composer, Vite, npm
